@@ -1,0 +1,29 @@
+{
+   "name": "typeorm-sample",
+   "version": "0.0.1",
+   "description": "API for Cosmic App developed with TypeORM.",
+   "type": "commonjs",
+   "devDependencies": {
+      "@types/node": "^16.11.10",
+      "express-routes-group": "^1.0.4",
+      "jsonwebtoken": "^9.0.0",
+      "ts-node": "10.7.0",
+      "typescript": "4.5.2"
+   },
+   "dependencies": {
+      "body-parser": "^1.19.1",
+      "dotenv": "^16.0.3",
+      "express": "^4.17.2",
+      "express-validation": "^4.1.0",
+      "express-validator": "^6.15.0",
+      "morgan": "^1.10.0",
+      "pg": "^8.4.0",
+      "reflect-metadata": "^0.1.13",
+      "typeorm": "0.3.12"
+   },
+   "scripts": {
+      "start": "ts-node src/index.ts",
+      "dev": "nodemon -w *.ts src/index.ts",
+      "typeorm": "typeorm-ts-node-commonjs"
+   }
+}
