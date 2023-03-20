@@ -152,10 +152,10 @@ export class User {
     })
     blocked_at: string
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
     created_at: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
     updated_at: Date;
 
     @DeleteDateColumn()

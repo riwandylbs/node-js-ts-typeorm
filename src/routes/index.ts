@@ -79,6 +79,63 @@ router.post('/sign-in',
     }
 );
 
+router.post('/request/otp',
+    check('phone', "phone number is mandatory").not().isEmpty(),
+    async (req, res, next) => {
+        try {
+            validationResult(req).throw()
+            
+            const authController = new AuthController()
+            const response = await authController.requestOtp(req, res, next)
+
+            return res.status(response["code"]).send({
+                code: response["code"], 
+                success: response["success"],
+                msg: response["msg"],
+                errors: [],
+                data: response["data"]
+            })
+
+        } catch (err) {
+            return res.status(403).json({
+                code: 403,
+                success: false,
+                errors: err['errors'],
+                data: []
+            })
+        }
+    }
+);
+
+router.post('/validate/otp',
+    check('otp_code', "OTP Code is mandatory").not().isEmpty(),
+    check('phone', "Phone number is mandatory").not().isEmpty(),
+    async (req, res, next) => {
+        try {
+            validationResult(req).throw()
+            
+            const authController = new AuthController()
+            const response = await authController.validateOTP(req, res, next)
+
+            return res.status(response["code"]).send({
+                code: response["code"], 
+                success: response["success"],
+                msg: response["msg"],
+                errors: [],
+                data: response["data"]
+            })
+
+        } catch (err) {
+            return res.status(403).json({
+                code: 403,
+                success: false,
+                errors: err['errors'],
+                data: []
+            })
+        }
+    }
+);
+
 router.use("/users", UserRouter)
 
 export default router;

@@ -5,27 +5,13 @@ import { UserRepository } from '../repository/user.repository'
 
 export class UserController {
 
-    private userRepository = AppDataSource.getRepository(User)
+    // private userRepository = AppDataSource.getRepository(User)
 
     async all(request: Request, response: Response, next: NextFunction) {
         const userRepo = new UserRepository
         let dataUser = userRepo.all()
 
         return dataUser
-    }
-
-    async one(request: Request, response: Response, next: NextFunction) {
-        const id = parseInt(request.params.id)
-        
-
-        const user = await this.userRepository.findOne({
-            where: { id }
-        })
-
-        if (!user) {
-            return "unregistered user"
-        }
-        return user
     }
 
     async signUp(request: Request, response: Response, next: NextFunction) {
@@ -36,18 +22,18 @@ export class UserController {
         return saveUser
     }
 
-    async remove(request: Request, response: Response, next: NextFunction) {
-        const id = parseInt(request.params.id)
+    // async remove(request: Request, response: Response, next: NextFunction) {
+    //     const id = parseInt(request.params.id)
 
-        let userToRemove = await this.userRepository.findOneBy({ id })
+    //     let userToRemove = await this.userRepository.findOneBy({ id })
 
-        if (!userToRemove) {
-            return "this user not exist"
-        }
+    //     if (!userToRemove) {
+    //         return "this user not exist"
+    //     }
 
-        await this.userRepository.remove(userToRemove)
+    //     await this.userRepository.remove(userToRemove)
 
-        return "user has been removed"
-    }
+    //     return "user has been removed"
+    // }
 
 }

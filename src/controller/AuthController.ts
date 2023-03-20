@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { UserRepository } from "../repository/user.repository";
 import * as bcrypt from 'bcrypt';
 import { jwtSign } from "../helper/jwt";
+import { OtpRepository } from "../repository/otp.repository";
 
 interface ObjectResponse {
     success: boolean,
@@ -72,5 +73,55 @@ export class AuthController {
         }
     }
 
+    async requestOtp(req: Request, res: Response, next: NextFunction) {
+        try {
+            const otpRepo = new OtpRepository
+            let otp = await otpRepo.requestOTP( req )
+            const timestamp: number = otp.expiryAt
+            const date: Date = new Date( timestamp * 1000 )
+
+            resp.code = 200
+            resp.success = true
+            resp.msg = "your OTP was sent to your mobile phone!"
+            resp.data = {
+                expiry_at : date.toISOString()
+            }
+
+            return resp
+        } catch (err) {
+            return resp.msg = err
+        }
+    }
+
+    async validateOTP(req: Request, res: Response, next: NextFunction) {
+        try {
+            const otpRepo = new OtpRepository
+            let otp = await otpRepo.validateOTP( req )
+            
+            if ( otp == null ) {
+                resp.code = 403
+                resp.msg = "Your OTP doesn't exists!"
+                return resp
+            }
+
+            const nowTime = Date.now()
+            if ( (parseInt( otp.expiryAt ) * 1000) < nowTime ) {
+                resp.code = 403
+                resp.msg = "Your OTP was expired!"
+                resp.data = []
+
+                return resp
+            }
+
+            resp.code = 202
+            resp.success = true
+            resp.msg = "Your OTP is valid!"
+            resp.data = []
+
+            return resp
+        } catch (err) {
+            return resp.msg = err
+        }
+    }
 
 }

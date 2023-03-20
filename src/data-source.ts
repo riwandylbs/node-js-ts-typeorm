@@ -1,6 +1,7 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USERNAME } from "./config"
+import { OneTimePass } from "./entity/OneTimePass"
 import { User } from "./entity/User"
 
 export const AppDataSource = new DataSource({
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
     database: DB_NAME,
     synchronize: false,
     logging: false,
-    entities: [User],
+    entities: [User, OneTimePass],
     migrations: [],
     subscribers: [],
 })
