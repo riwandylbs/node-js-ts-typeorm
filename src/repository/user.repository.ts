@@ -11,14 +11,37 @@ export class UserRepository {
     }
 
     async save(req) {
-        const { firstName, lastName, age } = req.body;
-
+        const { fullName, phone, password, email, icNumber, nationality, bod, race, gender, postCode, state, city } = req.body;
+        console.log( fullName )
+        let status = "unverified"
+        let userRole = "visitors"
         const user = Object.assign(new User(), {
-            firstName,
-            lastName,
-            age
+            fullName,
+            phone,
+            password,
+            email,
+            icNumber,
+            nationality,
+            bod,
+            race,
+            status,
+            userRole,
+            gender,
+            postCode,
+            state, 
+            city
         })
 
         return this.userRepository.save(user)
+    }
+
+    async validate(req) {
+        const { email } = req.body;
+        
+        const user = await this.userRepository.findOne({
+            where: { email }
+        })
+
+        return user
     }
 }

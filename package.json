@@ -5,6 +5,7 @@
    "type": "commonjs",
    "devDependencies": {
       "@types/node": "^16.11.10",
+      "bcrypt": "^5.1.0",
       "express-routes-group": "^1.0.4",
       "jsonwebtoken": "^9.0.0",
       "ts-node": "10.7.0",

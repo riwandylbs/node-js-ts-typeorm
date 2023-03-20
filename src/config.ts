@@ -8,3 +8,4 @@ export const DB_PASSWORD = process.env.DB_PASSWORD || "doe";
 export const DB_NAME = process.env.DB_NAME || "db_name";
 
 export const jwtSecret = process.env.JWT_SECRET_KEY || "cosmic";
+export const jwtExpiry = process.env.JWT_EXPIRY_TIME || 60;

@@ -1,3 +1,4 @@
+import { verify } from "crypto";
 import { NextFunction, Request, Response } from "express";
 import { jwtVerify } from "../helper/jwt";
 
@@ -22,7 +23,7 @@ export const authentication = async (req: Request, res: Response, next: NextFunc
             .json({code: 400, success: false, error: "Invalid client", data:[] });
     }
 
-    const nonSecureEndPointWithJWT = ['/'];
+    const nonSecureEndPointWithJWT = ['/sign-in', '/sign-up'];
     if (nonSecureEndPointWithJWT.includes(req.path)) return next()
 
     // Authenticate JWT value
@@ -32,8 +33,20 @@ export const authentication = async (req: Request, res: Response, next: NextFunc
     }
 
     let bearer = req.headers.authorization.split(' ')[1]
-    const verifyToken = jwtVerify(bearer)
-    console.log( verifyToken )
+    if ( bearer == undefined) {
+        return res.status(400)
+            .json({code: 400, success: false, error: "Invalid header authentication", data:[] });
+    }
+
+    // check expiry session
+    try {
+        const verifyToken = await jwtVerify(bearer)
+    } catch (error) {
+        return res.status(403)
+            .json({code: 403, success: false, error: {
+                msg: "Your session was expired!"
+            }, data:[] });
+    }
 
     next()
 }
